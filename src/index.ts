@@ -34,10 +34,10 @@ class WebsiteMonitor {
     this.config = {
       telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || "",
       telegramChatId: process.env.TELEGRAM_CHAT_ID || "",
-      urlsFile: process.env.URLS_FILE || "./urls.txt",
+      urlsFile: path.join(process.cwd(), process.env.URLS_FILE || "./urls.txt"),
       cronSchedule: process.env.CRON_SCHEDULE || "*/5 * * * *", // Every 5 minutes default
       timeout: parseInt(process.env.TIMEOUT || "5000"), // 5 seconds default
-      statusFile: process.env.STATUS_FILE || path.join(process.cwd(), "./website-status.json")
+      statusFile: path.join(process.cwd(), process.env.STATUS_FILE || "./website-status.json")
     };
 
     if (!this.config.telegramBotToken || !this.config.telegramChatId) {
