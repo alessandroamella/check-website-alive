@@ -126,6 +126,14 @@ class WebsiteMonitor {
 
     console.log(`Checking ${urls.length} websites...`);
     const now = new Date().toISOString();
+
+    // check if it's 00:00 - this often results in error
+    if (new Date().getHours() === 0 && new Date().getMinutes() === 0) {
+      // SKIP
+      console.log("Skipping checks at midnight to avoid false positives");
+      return;
+    }
+
     let statusChanged = false;
 
     for (const url of urls) {
