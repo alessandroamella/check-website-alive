@@ -34,7 +34,7 @@ if ! command -v pnpm &> /dev/null; then
     npm install -g pnpm
 fi
 
-pnpm install
+pnpm install --frozen-lockfile
 
 # Clean previous build
 echo "🧹 Cleaning previous build..."
