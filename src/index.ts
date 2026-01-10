@@ -109,7 +109,8 @@ class WebsiteMonitor {
   private async sendTelegramMessage(message: string): Promise<void> {
     try {
       await this.bot.sendMessage(this.config.telegramChatId, message, {
-        parse_mode: "HTML"
+        parse_mode: "HTML",
+        disable_web_page_preview: true
       });
       console.log("Telegram notification sent:", message);
     } catch (error) {
@@ -243,11 +244,11 @@ class WebsiteMonitor {
     await this.sendTelegramMessage(
       `🚀 <b>Website Monitor Started</b>\n\n` +
         `Monitor is now running with cron schedule: <code>${this.config.cronSchedule}</code> and timeout ${this.config.timeout}ms\n` +
-        `URLs file path: <code>${this.config.urlsFile}</code>\n\n` +
-        `Status file path: <code>${this.config.statusFile}</code>\n\n` +
-        `We will be monitoring these URLs: ${urls
-          .map(url => `<a href="${url}">${url}</a>`)
-          .join(", ")}\n` +
+        `URLs file path: <code>${this.config.urlsFile}</code>\n` +
+        `Status file path: <code>${this.config.statusFile}</code>\n` +
+        `We will be monitoring these URLs:\n` +
+        urls.map(url => `- ${url}`).join("\n") +
+        "\n" +
         `Time: ${new Date().toISOString()}`
     );
 

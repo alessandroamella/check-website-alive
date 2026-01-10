@@ -36,6 +36,10 @@ fi
 
 pnpm install
 
+# Clean previous build
+echo "🧹 Cleaning previous build..."
+pnpm run clean
+
 # Build the project
 echo "🔨 Building the project..."
 pnpm run build
