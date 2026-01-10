@@ -16,7 +16,7 @@ fi
 PROJECT_DIR="/opt/website-monitor"
 echo "📁 Creating project directory at $PROJECT_DIR"
 sudo mkdir -p $PROJECT_DIR
-sudo chown $USER:$USER $PROJECT_DIR
+sudo chown -R $USER:$USER $PROJECT_DIR
 
 # Copy files to project directory
 echo "📋 Copying project files..."
