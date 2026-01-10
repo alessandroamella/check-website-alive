@@ -1,10 +1,10 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import axios from "axios";
 import { differenceInHours } from "date-fns";
 import dotenv from "dotenv-safe";
-import fs from "fs/promises";
 import * as cron from "node-cron";
 import TelegramBot from "node-telegram-bot-api";
-import path from "path";
 
 // Load environment variables
 dotenv.config();
@@ -36,7 +36,7 @@ class WebsiteMonitor {
       telegramChatId: process.env.TELEGRAM_CHAT_ID || "",
       urlsFile: path.join(process.cwd(), process.env.URLS_FILE || "./urls.txt"),
       cronSchedule: process.env.CRON_SCHEDULE || "*/5 * * * *", // Every 5 minutes default
-      timeout: parseInt(process.env.TIMEOUT || "5000"), // 5 seconds default
+      timeout: parseInt(process.env.TIMEOUT || "5000", 10), // 5 seconds default
       statusFile: path.join(process.cwd(), process.env.STATUS_FILE || "./website-status.json")
     };
 
