@@ -236,10 +236,19 @@ class WebsiteMonitor {
     // Load existing website statuses
     await this.loadWebsiteStatuses();
 
+    const urls = await this.loadUrls();
+    console.log(`Loaded ${urls.length} URLs to monitor`);
+
     // Send startup notification
     await this.sendTelegramMessage(
       `🚀 <b>Website Monitor Started</b>\n\n` +
-        `Monitor is now running with cron schedule: <code>${this.config.cronSchedule}</code>`
+        `Monitor is now running with cron schedule: <code>${this.config.cronSchedule}</code> and timeout ${this.config.timeout}ms\n` +
+        `URLs file path: <code>${this.config.urlsFile}</code>\n\n` +
+        `Status file path: <code>${this.config.statusFile}</code>\n\n` +
+        `We will be monitoring these URLs: ${urls
+          .map(url => `<a href="${url}">${url}</a>`)
+          .join(", ")}\n` +
+        `Time: ${new Date().toISOString()}`
     );
 
     // Initial check
