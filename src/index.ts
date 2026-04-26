@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import axios from "axios";
 import { differenceInHours, getHours, getMinutes } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 import dotenv from "dotenv-safe";
 import * as cron from "node-cron";
 import TelegramBot from "node-telegram-bot-api";
@@ -129,13 +130,16 @@ class WebsiteMonitor {
     const now = new Date().toISOString();
     const currentDate = new Date();
 
-    // check if it's around midnight (23:59 to 00:02) - this often results in errors
-    const hours = getHours(currentDate);
-    const minutes = getMinutes(currentDate);
+    // check if it's around midnight in Rome timezone (23:59 to 00:02) - this often results in errors
+    const romeTime = toZonedTime(currentDate, "Europe/Rome");
+    const hours = getHours(romeTime);
+    const minutes = getMinutes(romeTime);
     const isMidnightWindow = (hours === 23 && minutes === 59) || (hours === 0 && minutes <= 2);
 
     if (isMidnightWindow) {
-      console.log("Skipping checks in midnight window (23:59-00:02) to avoid false positives");
+      console.log(
+        "Skipping checks in midnight window (23:59-00:02 Rome time) to avoid false positives"
+      );
       return;
     }
 
