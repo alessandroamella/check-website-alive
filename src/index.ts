@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import axios from "axios";
 import { differenceInHours, getHours, getMinutes } from "date-fns";
-import { toZonedTime } from "date-fns-tz";
+import { formatInTimeZone, toZonedTime } from "date-fns-tz";
 import dotenv from "dotenv-safe";
 import * as cron from "node-cron";
 import TelegramBot from "node-telegram-bot-api";
@@ -249,6 +249,7 @@ class WebsiteMonitor {
     console.log(`Loaded ${urls.length} URLs to monitor`);
 
     // Send startup notification
+    const now = new Date();
     await this.sendTelegramMessage(
       `🚀 <b>Website Monitor Started</b>\n\n` +
         `Monitor is now running with cron schedule: <code>${this.config.cronSchedule}</code> and timeout ${this.config.timeout}ms\n` +
@@ -257,7 +258,8 @@ class WebsiteMonitor {
         `We will be monitoring these URLs:\n` +
         urls.map(url => `- ${url}`).join("\n") +
         "\n" +
-        `Time: ${new Date().toISOString()}`
+        `Time (UTC): ${now.toISOString()}\n` +
+        `Time (Rome): ${formatInTimeZone(now, "Europe/Rome", "dd/MM/yyyy HH:mm:ss")}`
     );
 
     // Initial check
